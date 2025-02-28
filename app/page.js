@@ -9,9 +9,6 @@ export default function Home() {
       <div>
         <Chat />
       </div>
-      {/* <div className="px-5 fixed bottom-12">
-        <DarkModeToggle />
-      </div> */}
     </main>
   );
 }
