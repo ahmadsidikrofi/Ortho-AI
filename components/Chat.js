@@ -47,7 +47,7 @@ export default function Chat() {
       {messages.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-center mt-20">
           <Sparkle size={60} className="text-blue-500 mb-4" />
-          <TextEffect per='word' as='h3' preset='blur' className="text-3xl font-semibold text-gray-700">
+          <TextEffect per='word' as='h3' preset='blur' className="text-3xl text-gray-700">
             How can I assist you today?
           </TextEffect>
           <TextEffect per='word' as='h3' preset='slide' className="text-sm text-gray-500">
@@ -66,7 +66,7 @@ export default function Chat() {
                   <span className='mt-4 mx-4'><Sparkle size={40} className='rounded-full border p-2' /></span>
                 )}
                 <div className="flex flex-col gap-2 max-w-[80%]">
-                  <div className={`mt-4 p-3 ${isEditModeOn && editResponseMode === m.id ? '' : m.role === 'user' ? 'bg-[#00b0f0] text-white' : 'bg-blue-100 text-slate-800'} font-semibold rounded-[16px] overflow-x-auto ${isEditModeOn && m.role === 'assistant' ? '' : 'shadow-component'}`}>
+                  <div className={`mt-4 p-3 ${isEditModeOn && editResponseMode === m.id ? '' : m.role === 'user' ? 'bg-[#00b0f0] text-white' : 'bg-blue-100 text-slate-800'} rounded-[16px] overflow-x-auto ${isEditModeOn && m.role === 'assistant' ? '' : 'shadow-component'}`}>
                     {isEditModeOn && editResponseMode === m.id ? (
                       <EditorChat editContent={editContent}/>
                     ) : (
@@ -82,12 +82,14 @@ export default function Chat() {
                   </div>
                   {m.role === 'assistant' && (
                     <div className='flex'>
-                      <button className='mx-1 w-10' onClick={() => onEditResponseMode(m.id, m.content)}><PencilLine className='rounded-full p-2 hover:bg-gray-200' size={34} /></button>
-                      <button className='mx-1 w-10' onClick={() => copyToClipboard(m.id, m.content)}>{isResponseCopied && copyResponseByID === m.id ? 
-                        <CheckCircle className='rounded-full p-2 hover:bg-gray-200' size={34} /> 
+                      <Button variant='ghost' className='mx-1' onClick={() => onEditResponseMode(m.id, m.content)}>
+                        <PencilLine /> Edit
+                      </Button>
+                      <Button variant='ghost' onClick={() => copyToClipboard(m.id, m.content)}>{isResponseCopied && copyResponseByID === m.id ? 
+                        <CheckCircle/>
                         : 
-                        <ClipboardText className='rounded-full p-2 hover:bg-gray-200' size={34} />}
-                      </button>
+                        <><ClipboardText /> Salin</>}
+                      </Button>
                     </div>
                   )}
                   {isEditModeOn && editResponseMode === m.id && (
