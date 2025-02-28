@@ -9,7 +9,7 @@ const EditorChat = ({ editContent }) => {
     }
     return (
         <Editor
-            apiKey='o61nnuwogclhd3z601n2k0zh479m9kbnsivauhaxrlu4jco0'
+            apiKey={process.env.TINY_MCE_EDITOR}
             onInit={(_evt, editor) => editorRef.current = editor}
             initialValue={convertMarkdownToHTML(editContent)}
             init={{
