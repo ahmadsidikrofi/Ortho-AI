@@ -27,7 +27,7 @@ const buildAIGenerativePrompt = (messages: Message[]): Message[] => [
 export async function POST (req: Request) {
   const { messages } = await req.json();
     const result = streamText({
-      model: google('gemini-2.0-flash'),
+      model: google('gemini-1.5-pro-latest'),
       messages: buildAIGenerativePrompt(messages),
       temperature: 0.7
   });
