@@ -75,8 +75,8 @@ export default function Chat() {
                 {isAssistantMessage && (
                   <span className='mt-4 mx-4 max-sm:hidden'><Sparkle size={40} className='rounded-full border p-2' /></span>
                 )}
-                <div className={`flex flex-col  max-w-[80%] ${isAssistantMessage ? 'max-sm:max-w-full' : ''}`}>
-                  <div className={`mt-4 p-3 ${isEditModeOn && editResponseMode === m.id ? '' : m.role === 'user' ? 'bg-[#00b0f0] text-white' : 'bg-blue-100 text-slate-800'} rounded-[16px] overflow-x-auto ${isEditModeOn && m.role === 'assistant' ? '' : 'shadow-component'}`}>
+                <div className={`flex flex-col max-w-[80%] ${isAssistantMessage ? 'max-sm:max-w-full' : ''}`}>
+                  <div className={`mt-4 px-3 ${isEditModeOn && editResponseMode === m.id ? '' : m.role === 'user' ? 'bg-[#00b0f0] text-white' : 'bg-blue-100 text-slate-800'} rounded-[16px] overflow-x-auto ${isEditModeOn && m.role === 'assistant' ? '' : 'shadow-component'}`}>
                     {isEditModeOn && editResponseMode === m.id ? (
                       <EditorChat editContent={editContent}/>
                     ) : (
