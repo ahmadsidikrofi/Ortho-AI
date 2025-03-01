@@ -10,6 +10,7 @@ import { TextShimmer } from './ui/text-shimmer';
 import EditorChat from './EditorChat';
 import { TextEffect } from './ui/text-effect';
 import { BorderTrail } from './ui/border-trail';
+import { Sparkles, WandSparkles } from 'lucide-react';
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
@@ -55,7 +56,7 @@ export default function Chat() {
       <Header />
       {messages.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-center mt-20">
-          <Sparkle size={60} className="text-blue-500 mb-4" />
+          <Sparkle size={50} className="text-blue-500" />
           <TextEffect preset='fade-in-blur' speedReveal={1.1} speedSegment={0.3} className="text-3xl text-gray-700">
             How can I assist you today?
           </TextEffect>
@@ -90,21 +91,23 @@ export default function Chat() {
                     )}
                   </div>
                   {m.role === 'assistant' && (
-                    <div className='flex mt-2'>
-                      <Button variant='ghost' className='mx-1' onClick={() => onEditResponseMode(m.id, m.content)}>
-                        <PencilLine /> Edit
-                      </Button>
-                      <Button variant='ghost' onClick={() => copyToClipboard(m.id, m.content)}>{isResponseCopied && copyResponseByID === m.id ? 
-                        <CheckCircle/>
-                        : 
-                        <><ClipboardText /> Salin</>}
-                      </Button>
-                    </div>
-                  )}
-                  {isEditModeOn && editResponseMode === m.id && (
-                    <div className='flex gap-4'>
-                      <button onClick={() => setEditModeOn(false)} className='bg-black text-white rounded-[30px] w-24 p-1'>Cancel</button>
-                      <button className='bg-black text-white rounded-[30px] w-24 p-1'>Send</button>
+                    <div className='flex'>
+                      {isEditModeOn && editResponseMode === m.id && (
+                        <div className='flex mt-2'>
+                          <Button variant='ghost' className='mx-1' onClick={() => setEditModeOn(false)}> Cancel</Button>
+                          <Button variant='ghost' disabled> Send</Button>
+                        </div>
+                      )}
+                      <div className='flex mt-2'>
+                        <Button variant='ghost' className='mx-1' onClick={() => onEditResponseMode(m.id, m.content)}>
+                          <PencilLine /> Edit
+                        </Button>
+                        <Button variant='ghost' onClick={() => copyToClipboard(m.id, m.content)}>{isResponseCopied && copyResponseByID === m.id ? 
+                          <CheckCircle/>
+                          : 
+                          <><ClipboardText /> Copy</>}
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>

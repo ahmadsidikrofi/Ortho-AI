@@ -9,9 +9,10 @@ const EditorChat = ({ editContent }) => {
     }
     return (
         <Editor
-            apiKey={process.env.TINY_MCE_EDITOR}
+            apiKey='o61nnuwogclhd3z601n2k0zh479m9kbnsivauhaxrlu4jco0'
             onInit={(_evt, editor) => editorRef.current = editor}
             initialValue={convertMarkdownToHTML(editContent)}
+            license_key='gpl'
             init={{
                 height: 500,
                 width: 500,
