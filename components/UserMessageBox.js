@@ -27,10 +27,10 @@ const UserMessageBox = ({ setEditContent, input, handleInputChange, handleSubmit
     }
 
     return (
-        <div className="">
+        <div className="dark:bg-black/40 bg-slate-100/40 backdrop-blur-md p-2 rounded-[14px]">
             <div className="relative flex w-full">
                 <textarea
-                    className="flex-1 dark:bg-black/40 bg-slate-100/40 backdrop-blur-md dark:text-white text-slate-800 pt-3 px-5 pr-14 rounded-[15px] shadow-xl mx-auto focus:outline-none focus:ring-0 placeholder:text-slate-800 dark:placeholder:text-stone-200 dark:caret-white caret-black resize-none scrollbar-hide"
+                    className="flex-1 dark:text-white text-slate-800 pt-3 px-5 pr-14 rounded-[15px] shadow-xl mx-auto focus:outline-none focus:ring-0 placeholder:text-slate-800 dark:placeholder:text-stone-200 dark:caret-white caret-black resize-none scrollbar-hide"
                     value={input}
                     placeholder="Ask me a question"
                     onChange={(e) => {
