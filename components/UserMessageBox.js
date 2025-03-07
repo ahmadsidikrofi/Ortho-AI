@@ -2,9 +2,17 @@ import { ArrowUp, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 
 const UserMessageBox = ({ setEditContent, input, handleInputChange, handleSubmit, isLoading }) => {
+    let isComposing = false // Flag untuk deteksi IME
+    const handleCompositionStart = () => { isComposing = true }
+    const handleCompositionEnd = () => { isComposing = false }
+    
     const handleKeyPress = (e) => {
         const isMobileDevice = window.innerWidth <= 768
-        if (e.key === 'Enter' && e.shiftKey) {
+        if (isComposing) return
+        if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault()
+            handleSubmit()
+        } else if (e.key === 'Enter' && e.shiftKey) {
             const cursorPosition = e.target.selectionStart;
             const updatedValue =
                 input.slice(0, cursorPosition) + "\n" + input.slice(cursorPosition);
@@ -20,10 +28,11 @@ const UserMessageBox = ({ setEditContent, input, handleInputChange, handleSubmit
             setEditContent(e.target.value)
             e.target.scrollTop = e.target.scrollHeight
             e.preventDefault();
-        } else if (!isMobileDevice && e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit();
         }
+        // else if (!isMobileDevice && e.key === 'Enter' && !e.shiftKey) {
+        //     e.preventDefault();
+        //     handleSubmit();
+        // }
     }
 
     return (
@@ -39,6 +48,8 @@ const UserMessageBox = ({ setEditContent, input, handleInputChange, handleSubmit
                         e.target.style.height = `${Math.min(100 + (lines - 1) * 24, 100 + 4 * 24)}px`
                     }}
                     onKeyDown={(e) => handleKeyPress(e)}
+                    onCompositionStart={handleCompositionStart}
+                    onCompositionEnd={handleCompositionEnd}
                     style={{
                         height: `${Math.min(100 + (input.split(/\r\n|\r|\n/).length - 1) * 24, 100 + 4 * 24)}px`,
                         lineHeight: '24px',
