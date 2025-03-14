@@ -1,6 +1,6 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { convertToCoreMessages, streamText, Message} from 'ai';
-import { initialPrompt } from '@/lib/initialPrompt';
+import { DoctorPrompt } from '@/lib/DoctorPrompt'
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_API_KEY
@@ -15,7 +15,7 @@ const buildAIGenerativePrompt = (messages: Message[]): Message[] => [
   {
     id: generatedId(),
     role: 'user',
-    content: initialPrompt.content
+    content: DoctorPrompt.content
   },
   ...messages.map((message) => ({
     id: message.id || generatedId(),
