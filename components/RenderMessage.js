@@ -1,9 +1,12 @@
+import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 
-export default function RenderMessage({ content }) {
+const RenderMessage = ({ content }) => {
+  const memoContent = useMemo(() => content, [content])
+
   return (
     <div className="prose prose-slate max-w-none">
       <ReactMarkdown
@@ -70,8 +73,11 @@ export default function RenderMessage({ content }) {
           },
         }}
       >
-        {content}
+        {memoContent}
       </ReactMarkdown>
     </div>
   );
 }
+const MemoizedRenderMessage = React.memo(RenderMessage);
+
+export default MemoizedRenderMessage

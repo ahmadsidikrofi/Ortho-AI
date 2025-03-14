@@ -2,7 +2,7 @@
 import { useChat } from 'ai/react';
 import RenderMessage from './RenderMessage';
 import { CheckCircle, ClipboardText, PencilLine, Sparkle } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import UserMessageBox from './UserMessageBox';
 import { Button } from "@/components/ui/button"
 import Header from './Header';
@@ -10,7 +10,7 @@ import { TextShimmer } from './ui/text-shimmer';
 import EditorChat from './EditorChat';
 import { TextEffect } from './ui/text-effect';
 import { BorderTrail } from './ui/border-trail';
-import { Sparkles, WandSparkles } from 'lucide-react';
+import MemoizedRenderMessage from "@/components/RenderMessage"
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
@@ -19,6 +19,7 @@ export default function Chat() {
   const [ isEditModeOn, setEditModeOn ] = useState(false)
   const [ isResponseCopied, setIsResponseCopied ] = useState(false)
   const [ copyResponseByID, setCopyResponseById ] = useState(null)
+  const memoizedMessages = useMemo(() => messages, [messages])
 
   const onEditResponseMode = (messageId, content) => {
     setEditModeOn((prevState) => !prevState)
@@ -54,20 +55,20 @@ export default function Chat() {
         />
       ) : null}
       <Header />
-      {messages.length === 0 ? (
+      {memoizedMessages.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-center mt-20">
           <Sparkle size={50} className="text-blue-500" />
           <TextEffect preset='fade-in-blur' speedReveal={1.1} speedSegment={0.3} className="text-3xl text-gray-700">
             How can I assist you today?
           </TextEffect>
           <TextEffect per='char' as='h3' preset='fade' className="text-sm text-gray-500">
-            Ask me anything about dental care, treatments, or patient cases.
+            Ask me anything about aligner care, treatments, or patient cases.
           </TextEffect>
         </div>
       ) : (
         <>
-          {messages.map((m, index) => {
-            const isLastMessage = index === messages.length - 1;
+          {memoizedMessages.map((m, index) => {
+            const isLastMessage = index === memoizedMessages.length - 1;
             const isAssistantMessage = m.role === 'assistant';
             // console.log(m.content)
             return (
@@ -86,7 +87,7 @@ export default function Chat() {
                               Generating Answer...
                             </TextShimmer>
                           )}
-                        <RenderMessage content={m.content} animate={m.role === 'assistant' && index === messages.length - 1} />
+                        <MemoizedRenderMessage content={m.content} animate={m.role === 'assistant' && index === messages.length - 1} />
                       </div>
                     )}
                   </div>
