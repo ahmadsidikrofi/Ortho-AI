@@ -6,9 +6,7 @@ import DarkModeToggle from "../components/DarkModeToggle"
 export default function Home() {
   return (
     <main>
-      <div>
-        <Chat />
-      </div>
+      <Chat />
     </main>
   );
 }

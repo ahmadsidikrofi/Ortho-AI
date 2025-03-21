@@ -13,7 +13,10 @@ import { BorderTrail } from './ui/border-trail';
 import MemoizedRenderMessage from "@/components/RenderMessage"
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  // const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const [ messages, setMessages ] = useState([])
+  const [input, setInput] = useState("")
+  const [ isLoading, setIsLoading ] = useState(false)
   const [ editResponseMode, setEditResponseMode ] = useState(null)
   const [ editContent, setEditContent ] = useState('')
   const [ isEditModeOn, setEditModeOn ] = useState(false)
@@ -21,6 +24,39 @@ export default function Chat() {
   const [ copyResponseByID, setCopyResponseById ] = useState(null)
   const memoizedMessages = useMemo(() => messages, [messages])
 
+  const handleSubmit = async (e = null) => {
+    if (e) e.preventDefault()
+    if (!input.trim()) return
+    setIsLoading(true)
+    const userMessage = { id: Date.now(), role: "user", content: input }
+    const typingPlaceholder = { id: "typing", role: "assistant", content: "..." }
+  
+    try {
+      setMessages((prevMessages) => [...prevMessages, userMessage, typingPlaceholder])
+      const response = await fetch(`http://192.168.100.73:8000/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: input }),
+      });
+  
+      const data = await response.json()
+      const aiResponse = { id: Date.now() + 1, role: "assistant", content: data.response.content }
+      setTimeout(() => {
+        // setMessages((prevMessages) => [...prevMessages, aiResponse])
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== "typing").concat(aiResponse)
+        )
+        setIsLoading(false)
+      }, 3000)
+    } catch (error) {
+      console.error("Error fetching response:", error)
+      setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== "typing"))
+      setIsLoading(false)
+    } finally {
+      setInput('')
+    }
+  }
+  
   const onEditResponseMode = (messageId, content) => {
     setEditModeOn((prevState) => !prevState)
     setEditResponseMode(messageId)
@@ -82,12 +118,13 @@ export default function Chat() {
                       <EditorChat editContent={editContent}/>
                     ) : (
                       <div>
-                          {isAssistantMessage && isLastMessage && isLoading && (
+                          {m.id === "typing" ? (
                             <TextShimmer className="text-sm my-4" duration={1}>
                               Generating Answer...
                             </TextShimmer>
+                          ) : (
+                            <MemoizedRenderMessage content={m.content} animate={m.role === 'assistant' && index === messages.length - 1} />
                           )}
-                        <MemoizedRenderMessage content={m.content} animate={m.role === 'assistant' && index === messages.length - 1} />
                       </div>
                     )}
                   </div>
@@ -120,7 +157,7 @@ export default function Chat() {
 
       <div className='mt-20'>    
         <form onSubmit={handleSubmit} className='fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-xl'>
-          <UserMessageBox isLoading={isLoading} setEditContent={setEditContent} input={input} handleInputChange={handleInputChange} handleSubmit={handleSubmit}/>
+          <UserMessageBox isLoading={isLoading} setEditContent={setEditContent} input={input} handleInputChange={(e) => setInput(e.target.value)} handleSubmit={handleSubmit}/>
         </form>
       </div>
     </div>
