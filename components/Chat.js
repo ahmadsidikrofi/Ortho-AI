@@ -1,6 +1,5 @@
 'use client';
 import { useChat } from 'ai/react';
-import RenderMessage from './RenderMessage';
 import { CheckCircle, ClipboardText, PencilLine, Sparkle } from '@phosphor-icons/react';
 import { useMemo, useState } from 'react';
 import UserMessageBox from './UserMessageBox';
@@ -13,7 +12,7 @@ import { BorderTrail } from './ui/border-trail';
 import MemoizedRenderMessage from "@/components/RenderMessage"
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat()
   const [ editResponseMode, setEditResponseMode ] = useState(null)
   const [ editContent, setEditContent ] = useState('')
   const [ isEditModeOn, setEditModeOn ] = useState(false)
