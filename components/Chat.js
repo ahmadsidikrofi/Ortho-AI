@@ -11,7 +11,6 @@ import { BorderTrail } from './ui/border-trail';
 import MemoizedRenderMessage from "@/components/RenderMessage"
 
 export default function Chat() {
-  // const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
   const [ messages, setMessages ] = useState([])
   const [input, setInput] = useState("")
   const [ isLoading, setIsLoading ] = useState(false)
