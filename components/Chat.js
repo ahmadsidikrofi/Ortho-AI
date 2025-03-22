@@ -30,7 +30,7 @@ export default function Chat() {
   
     try {
       setMessages((prevMessages) => [...prevMessages, userMessage, typingPlaceholder])
-      const response = await fetch(`http://162.43.29.77:8000/ask`, {
+      const response = await fetch(`https://orthoai.maorthonet.com/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: input }),
@@ -92,10 +92,10 @@ export default function Chat() {
         <div className="flex flex-col items-center justify-center text-center mt-20">
           <Sparkle size={50} className="text-blue-500" />
           <TextEffect preset='fade-in-blur' speedReveal={1.1} speedSegment={0.3} className="text-3xl text-gray-700">
-            How can I assist you today?
+            How can I assist your case today?
           </TextEffect>
           <TextEffect per='char' as='h3' preset='fade' className="text-sm text-gray-500">
-            Ask me anything about aligner care, treatments, or patient cases.
+            Consult me on aligner treatments, patient cases, or clinical concerns.
           </TextEffect>
         </div>
       ) : (
