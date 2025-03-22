@@ -1,6 +1,4 @@
 'use client';
-import { useChat } from 'ai/react';
-import RenderMessage from './RenderMessage';
 import { CheckCircle, ClipboardText, PencilLine, Sparkle } from '@phosphor-icons/react';
 import { useMemo, useState } from 'react';
 import UserMessageBox from './UserMessageBox';
@@ -33,11 +31,11 @@ export default function Chat() {
   
     try {
       setMessages((prevMessages) => [...prevMessages, userMessage, typingPlaceholder])
-      const response = await fetch(`http://192.168.100.73:8000/ask`, {
+      const response = await fetch(`http://162.43.29.77:8000/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: input }),
-      });
+      })
   
       const data = await response.json()
       const aiResponse = { id: Date.now() + 1, role: "assistant", content: data.response.content }
